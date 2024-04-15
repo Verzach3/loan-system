@@ -1,8 +1,9 @@
-import type {MetaFunction} from "@remix-run/node";
+import {json, MetaFunction} from "@remix-run/node";
 import {db} from "../../db/db.server";
-import {useLoaderData} from "@remix-run/react";
+import {useLoaderData, useRevalidator} from "@remix-run/react";
 
 export async function loader() {
+    console.log("Servidor")
     return db.query.users.findMany();
 }
 
@@ -15,6 +16,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
     const loaderData = useLoaderData<typeof loader>();
+    const revalidator = useRevalidator();
     return (
         <div style={{fontFamily: "system-ui, sans-serif", lineHeight: "1.8"}}>
             {loaderData && loaderData.map((user) => (
@@ -23,6 +25,9 @@ export default function Index() {
                     <p>{user.email}</p>
                 </div>
             ))}
+            <button onClick={() => revalidator.revalidate()}>
+                revalidar
+            </button>
         </div>
     );
 }
