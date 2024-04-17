@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import process from "process";
 import {migrate} from "drizzle-orm/neon-http/migrator";
 import {drizzle} from "drizzle-orm/neon-http";
